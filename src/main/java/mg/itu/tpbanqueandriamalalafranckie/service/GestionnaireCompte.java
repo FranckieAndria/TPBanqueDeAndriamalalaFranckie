@@ -5,7 +5,7 @@
 package mg.itu.tpbanqueandriamalalafranckie.service;
 
 import jakarta.annotation.sql.DataSourceDefinition;
-import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
@@ -31,7 +31,7 @@ import mg.itu.tpbanqueandriamalalafranckie.entity.CompteBancaire;
             "driverClass=com.mysql.cj.jdbc.Driver"
         }
 )
-@RequestScoped
+@ApplicationScoped
 public class GestionnaireCompte {
 
     @PersistenceContext
@@ -52,6 +52,15 @@ public class GestionnaireCompte {
     public List<CompteBancaire> getAllComptes() {
         Query query = em.createNamedQuery("CompteBancaire.findAll");
         return query.getResultList();
+    }
+    
+    /**
+     * Compte le nombre de comptes bancaires présent dans la base de données
+     * @return 
+     */
+    public long countComptes() {
+        Query query = em.createNamedQuery("CompteBancaire.count");
+        return (long) query.getSingleResult();
     }
 
 }
