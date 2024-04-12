@@ -43,9 +43,25 @@ public class GestionnaireCompte {
      * Créer un compte dans la base de données
      *
      * @param c
+     * @return
      */
-    public void creerCompte(CompteBancaire c) {
+    @Transactional
+    public boolean creerCompte(CompteBancaire c) {
+        boolean erreur = false;
+
+        // Contrôle si le nom est vide
+        if (c.getNom().equalsIgnoreCase("")) {
+            Util.messageErreur("Le compte doit avoir un nom", "Le compte doit avoir un nom", "form:nom");
+            erreur = true;
+        }
+
+        if (erreur) {
+            return false;
+        }
+
         em.persist(c);
+        Util.addFlashInfoMessage("Nouveau compte " + c.getNom() + " créé avec succès");
+        return true;
     }
 
     /**
