@@ -15,20 +15,20 @@
             <ui:define name="content">
                 <h:form id="form">
                     <h:panelGrid columns="3">
-                        Id compte source : 
+                        Id du compte source : 
                         <h:inputText id="source" size="3" value="#{transfert.idSource}"
                                      required="true"
-                                     converterMessage="L'id est un nombre entier"/>
+                                     converterMessage="L'id doit être un nombre entier"/>
                         <h:message for="source"/>
-                        Id compte destinataire : 
+                        Id du compte destinataire : 
                         <h:inputText id="destinataire" size="3" value="#{transfert.idDestinataire}"
                                      required="true"
-                                     converterMessage="L'id est un nombre entier"/>
+                                     converterMessage="L'id doit être un nombre entier"/>
                         <h:message for="destinataire"/>
-                        Montant : 
+                        Montant à transférer : 
                         <h:inputText id="montant" size="3" value="#{transfert.montant}"
                                      required="true"
-                                     converterMessage="L'id est un nombre entier"/>
+                                     converterMessage="Le montant doit être un nombre entier"/>
                         <h:message for="montant"/>
                         <h:commandButton id="valider" value="Transferer" action="#{transfert.transfert}"/>
                     </h:panelGrid>

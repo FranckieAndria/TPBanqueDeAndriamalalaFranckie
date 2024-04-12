@@ -26,7 +26,10 @@ public class Transfert implements Serializable {
     private GestionnaireCompte gestionnaireCompte;
     
     public String transfert() {
-        this.gestionnaireCompte.transfert(this.getIdSource(), this.getIdDestinataire(), this.getMontant());
+        boolean succes = this.gestionnaireCompte.transfert(this.getIdSource(), this.getIdDestinataire(), this.getMontant());
+        if (!succes) {
+            return null;
+        }
         return "listeComptes?faces-redirect=true";
     }
 
