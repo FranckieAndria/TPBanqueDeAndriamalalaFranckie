@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="jakarta.faces.html">
+
+    <body>
+
+        <ui:composition template="./WEB-INF/template/template_default.xhtml">
+
+            <ui:define name="top">
+                Transfert entre 02 comptes
+            </ui:define>
+
+            <ui:define name="content">
+                <h:form id="form">
+                    <h:panelGrid columns="3">
+                        Id compte source : 
+                        <h:inputText id="source" size="3" value="#{transfert.idSource}"
+                                     required="true"
+                                     converterMessage="L'id est un nombre entier"/>
+                        <h:message for="source"/>
+                        Id compte destinataire : 
+                        <h:inputText id="destinataire" size="3" value="#{transfert.idDestinataire}"
+                                     required="true"
+                                     converterMessage="L'id est un nombre entier"/>
+                        <h:message for="destinataire"/>
+                        Montant : 
+                        <h:inputText id="montant" size="3" value="#{transfert.montant}"
+                                     required="true"
+                                     converterMessage="L'id est un nombre entier"/>
+                        <h:message for="montant"/>
+                        <h:commandButton id="valider" value="Transferer" action="#{transfert.transfert}"/>
+                    </h:panelGrid>
+                </h:form>
+                <h:messages/>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
