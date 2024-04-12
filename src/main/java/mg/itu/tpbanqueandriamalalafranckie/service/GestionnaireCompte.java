@@ -141,6 +141,16 @@ public class GestionnaireCompte {
     }
 
     /**
+     * Supprimer un compte bancaire
+     *
+     * @param compte
+     */
+    @Transactional
+    public void supprimerCompte(CompteBancaire compte) {
+        em.remove(em.merge(compte));
+    }
+
+    /**
      * Enregistrement des modifications apportées sur un compte
      *
      * @param compteBancaire
