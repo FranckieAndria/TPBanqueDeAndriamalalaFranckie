@@ -23,7 +23,7 @@ public class CompteBancaireTest {
     public void testConstructor() {
         int montant = 100;
         CompteBancaire instance = new CompteBancaire("toto", montant);
-        assertEquals(instance.getNom(), "totoa", "Nom titulaire compte mal enregistré dans l'instance");
+        assertEquals(instance.getNom(), "toto", "Nom titulaire compte mal enregistré dans l'instance");
         assertEquals(instance.getSolde(), montant, "Montant compte mal enregistré dans l'instance");
     }
 
