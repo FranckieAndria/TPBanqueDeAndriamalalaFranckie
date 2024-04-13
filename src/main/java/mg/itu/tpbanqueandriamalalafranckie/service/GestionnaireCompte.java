@@ -39,6 +39,40 @@ public class GestionnaireCompte {
     @PersistenceContext
     private EntityManager em;
 
+    @Transactional
+    public boolean modifier(CompteBancaire compteBancaire, String nom, int solde) {
+        boolean erreur = false;
+        if (nom.equalsIgnoreCase("")) {
+            Util.messageErreur("Le nom du compte est invalide", "Le nom du compte est invalide", "form:nom");
+            erreur = true;
+        }
+
+        if (erreur) {
+            return false;
+        }
+
+        String message = "";
+        if (compteBancaire.getNom().equals(nom) && compteBancaire.getSolde() == solde) {
+            message += "Aucune modification apportée";
+        } else {
+            message += "Modification réussie :";
+            if (!compteBancaire.getNom().equals(nom)) {
+                message += " Nom " + compteBancaire.getNom() + " changé en " + nom;
+            }
+            if (compteBancaire.getSolde() != solde) {
+                message += " Solde " + compteBancaire.getSolde() + " changé en " + solde;
+            }
+        }
+
+        // Attribution des nouvelles valeurs à compteBancaire avant l'update
+        compteBancaire.setNom(nom);
+        compteBancaire.setSolde(solde);
+
+        this.update(compteBancaire);
+        Util.addFlashInfoMessage(message);
+        return true;
+    }
+
     /**
      * Dépôt d'argent sur un compte bancaire.
      *
