@@ -12,7 +12,6 @@ import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import mg.itu.tpbanqueandriamalalafranckie.entity.CompteBancaire;
-import mg.itu.tpbanqueandriamalalafranckie.jsf.util.Util;
 
 /**
  * Bean CDI Façade pour gérer les CompteBancaire
@@ -40,37 +39,8 @@ public class GestionnaireCompte {
     private EntityManager em;
 
     @Transactional
-    public boolean modifier(CompteBancaire compteBancaire, String nom, int solde) {
-        boolean erreur = false;
-        if (nom.equalsIgnoreCase("")) {
-            Util.messageErreur("Le nom du compte est invalide", "Le nom du compte est invalide", "form:nom");
-            erreur = true;
-        }
-
-        if (erreur) {
-            return false;
-        }
-
-        String message = "";
-        if (compteBancaire.getNom().equals(nom) && compteBancaire.getSolde() == solde) {
-            message += "Aucune modification apportée";
-        } else {
-            message += "Modification réussie :";
-            if (!compteBancaire.getNom().equals(nom)) {
-                message += " Nom " + compteBancaire.getNom() + " changé en " + nom;
-            }
-            if (compteBancaire.getSolde() != solde) {
-                message += " Solde " + compteBancaire.getSolde() + " changé en " + solde;
-            }
-        }
-
-        // Attribution des nouvelles valeurs à compteBancaire avant l'update
-        compteBancaire.setNom(nom);
-        compteBancaire.setSolde(solde);
-
+    public void modifier(CompteBancaire compteBancaire) {
         this.update(compteBancaire);
-        Util.addFlashInfoMessage(message);
-        return true;
     }
 
     /**
@@ -101,77 +71,25 @@ public class GestionnaireCompte {
      * Créer un compte dans la base de données
      *
      * @param c
-     * @return
      */
     @Transactional
-    public boolean creerCompte(CompteBancaire c) {
-        boolean erreur = false;
-
-        // Contrôle si le nom est vide
-        if (c.getNom().equalsIgnoreCase("")) {
-            Util.messageErreur("Le compte doit avoir un nom", "Le compte doit avoir un nom", "form:nom");
-            erreur = true;
-        }
-
-        if (erreur) {
-            return false;
-        }
-
+    public void creerCompte(CompteBancaire c) {
         em.persist(c);
-        Util.addFlashInfoMessage("Nouveau compte " + c.getNom() + " créé avec succès");
-        return true;
     }
 
     /**
      * Effectuer un transfert entre 02 comptes
      *
-     * @param idSource
-     * @param idDestinataire
+     * @param compteSource
+     * @param compteDestinataire
      * @param montant
-     * @return
      */
     @Transactional
-    public boolean transfert(Long idSource, Long idDestinataire, int montant) {
-        boolean erreur = false;
-        CompteBancaire compteSource = this.findById(idSource);
-        CompteBancaire compteDestinataire = this.findById(idDestinataire);
-
-        // Vérification si les comptes existent bien dans la base de données
-        if (compteSource == null) {
-            Util.messageErreur("Aucun compte avec l'id : " + idSource, "Aucun compte avec l'id : " + idSource, "form:source");
-            erreur = true;
-        }
-        if (compteDestinataire == null) {
-            Util.messageErreur("Aucun compte avec l'id : " + idDestinataire, "Aucun compte avec l'id : " + idDestinataire, "form:destinataire");
-            erreur = true;
-        }
-
-        // Vérification si le solde du compte source est suffisant pour le transfert
-        if (compteSource != null && compteSource.getSolde() < montant) {
-            Util.messageErreur("Le solde du compte source est insuffisant", "Le solde du compte source est insuffisant", "form:montant");
-            erreur = true;
-        }
-
-        // Vérification si le montant est négatif
-        if (montant < 0) {
-            Util.messageErreur("Le montant saisi est invalide", "Le montant saisi est invalide", "form:montant");
-            erreur = true;
-        }
-
-        if (erreur) {
-            return false;
-        }
-
+    public void transfert(CompteBancaire compteSource, CompteBancaire compteDestinataire, int montant) {
         compteSource.retirer(montant);
         compteDestinataire.deposer(montant);
         this.update(compteSource);
         this.update(compteDestinataire);
-
-        String nomSource = compteSource.getNom();
-        String nomDestination = compteDestinataire.getNom();
-        Util.addFlashInfoMessage("Transfert du montant de " + montant + " depuis " + nomSource + " vers " + nomDestination + " correctement effectué");
-
-        return true;
     }
 
     /**

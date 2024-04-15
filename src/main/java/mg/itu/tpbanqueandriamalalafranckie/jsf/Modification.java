@@ -10,6 +10,7 @@ import jakarta.inject.Inject;
 import jakarta.validation.constraints.PositiveOrZero;
 import java.io.Serializable;
 import mg.itu.tpbanqueandriamalalafranckie.entity.CompteBancaire;
+import mg.itu.tpbanqueandriamalalafranckie.jsf.util.Util;
 import mg.itu.tpbanqueandriamalalafranckie.service.GestionnaireCompte;
 
 /**
@@ -37,11 +38,36 @@ public class Modification implements Serializable {
      * @return
      */
     public String modifier() {
-        boolean succes = this.gestionnaireCompte.modifier(compteBancaire, nom, solde);
-        if (!succes) {
-            return null;
+        boolean erreur = false;
+        
+        // Contrôle si le nom est vide
+        if (nom.equalsIgnoreCase("")) {
+            Util.messageErreur("Le nom du compte est invalide", "Le nom du compte est invalide", "form:nom");
+            erreur = true;
         }
-        return "listeComptes?faces-redirect=true";
+        
+        // Création du message en fonction des modifications apportées par l'utilisateur
+        String message = "";
+        if (compteBancaire.getNom().equals(nom) && compteBancaire.getSolde() == solde) {
+            message += "Aucune modification apportée";
+        } else {
+            message += "Modification réussie :";
+            if (!compteBancaire.getNom().equals(nom)) {
+                message += " Nom " + compteBancaire.getNom() + " changé en " + nom;
+            }
+            if (compteBancaire.getSolde() != solde) {
+                message += " Solde " + compteBancaire.getSolde() + " changé en " + solde;
+            }
+        }
+
+        if (!erreur) {
+            compteBancaire.setNom(nom);
+            compteBancaire.setSolde(solde);
+            this.gestionnaireCompte.modifier(compteBancaire);
+            Util.addFlashInfoMessage(message);
+            return "listeComptes?faces-redirect=true";
+        }
+        return null;
     }
 
     public void loadCompte() {

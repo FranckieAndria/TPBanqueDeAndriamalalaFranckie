@@ -15,10 +15,10 @@
             <ui:define name="content">
                 <h:form id="form">
                     <h:panelGrid columns="3">
-                        Nom : <h:inputText id="nom" size="3" value="#{ajoutCompte.nom}" required="true"/>
+                        Nom : <h:inputText id="nom" size="3" value="#{ajoutCompte.nom}"/>
                         <h:message for="nom"/>
-                        Montant : <h:inputText id="montant" size="3" value="#{ajoutCompte.montant}" required="true" validatorMessage="Le montant saisi est invalide" />
-                        <h:message for="montant"/>
+                        Solde : <h:inputText id="solde" size="3" value="#{ajoutCompte.solde}" required="true" validatorMessage="Le montant saisi est invalide" />
+                        <h:message for="solde"/>
                         <h:commandButton id="valider" value="Ajouter" action="#{ajoutCompte.action}"/>
                     </h:panelGrid>
                 </h:form>
