@@ -6,7 +6,7 @@
         
         <!--  propriété standard pour que les tables de la base de données soient supprimées et recréées à chaque déploiement de l'application -->
         <properties>
-            <property name="jakarta.persistence.schema-generation.database.action" value="create"/>
+            <property name="jakarta.persistence.schema-generation.database.action" value="none"/>
             <property name="eclipselink.logging.level" value="FINE"/>
         </properties>
     </persistence-unit>
