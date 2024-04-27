@@ -130,7 +130,7 @@ public class GestionnaireCompte {
      * @return
      */
     public List<CompteBancaire> getAllComptes() {
-        TypedQuery query = em.createNamedQuery("CompteBancaire.findAll", CompteBancaire.class);
+        TypedQuery<CompteBancaire> query = em.createNamedQuery("CompteBancaire.findAll", CompteBancaire.class);
         return query.getResultList();
     }
 
