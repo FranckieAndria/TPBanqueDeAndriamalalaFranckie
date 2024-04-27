@@ -9,6 +9,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import mg.itu.tpbanqueandriamalalafranckie.entity.CompteBancaire;
@@ -129,7 +130,7 @@ public class GestionnaireCompte {
      * @return
      */
     public List<CompteBancaire> getAllComptes() {
-        Query query = em.createNamedQuery("CompteBancaire.findAll");
+        TypedQuery query = em.createNamedQuery("CompteBancaire.findAll", CompteBancaire.class);
         return query.getResultList();
     }
 

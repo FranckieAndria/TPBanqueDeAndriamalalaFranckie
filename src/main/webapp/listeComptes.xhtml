@@ -11,7 +11,7 @@
         <ui:composition template="./WEB-INF/template/template_default.xhtml">
 
             <ui:define name="top">
-                Liste des comptes
+                Liste de tous les comptes
             </ui:define>
 
             <ui:define name="content">
@@ -58,6 +58,16 @@
                             <h:link outcome="modification?id=#{item.id}"
                                     title="Modifier le compte de #{item.nom}" class="update-icon" >
                                 <h:graphicImage name="images/update.png"/>
+                            </h:link>
+                        </p:column>
+                        
+                        <p:column width="10">
+                            <f:facet name="header">
+                                <h:outputText value="Historique opérations"/>
+                            </f:facet>
+                            <h:link outcome="operations">
+                                <f:param name="id" value="#{item.id}" />
+                                <h:outputText value="Details" />
                             </h:link>
                         </p:column>
 
